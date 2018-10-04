@@ -15,30 +15,27 @@ import java.sql.SQLException;
  */
 public class MySqlCon {
 
-    public static Connection getMySQLConnection()
+    private final static String HOST_NAME = "localhost";
+    private final static String DB_NAME = "test";
+    private final static String PORT_NUMBER = "3306";
+    private final static String USER_NAME = "root";
+    private final static String PASSwORD = "";
+
+    public Connection getMySQLConnection()
             throws ClassNotFoundException, SQLException {
-        String hostName = "localhost";
-        String dbName = "test";
-        String userName = "root";
-        String password = "12345";
-        return getMySQLConnection(hostName, dbName, userName, password);
-    }
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            // Cấu trúc URL Connection dành cho MySQL
+            // Ví dụ: jdbc:mysql://localhost:3306/simplehr
+            String connectionURL = "jdbc:mysql://" + HOST_NAME + ":"
+                    + PORT_NUMBER + "/" + DB_NAME;
 
-    public static Connection getMySQLConnection(String hostName, String dbName,
-            String userName, String password) throws SQLException,
-            ClassNotFoundException {
-        // Khai báo class Driver cho DB MySQL
-        // Việc này cần thiết với Java 5
-        // Java6 trở lên tự động tìm kiếm Driver thích hợp.
-        // Nếu bạn dùng Java > 5, thì ko cần dòng này cũng được.
-        Class.forName("com.mysql.jdbc.Driver");
-
-        // Cấu trúc URL Connection dành cho MySQL
-        // Ví dụ: jdbc:mysql://localhost:3306/simplehr
-        String connectionURL = "jdbc:mysql://" + hostName + ":3306/" + dbName;
-
-        Connection conn = DriverManager.getConnection(connectionURL, userName,
-                password);
+            conn = DriverManager.getConnection(connectionURL, USER_NAME,
+                    PASSwORD);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return conn;
     }
 
