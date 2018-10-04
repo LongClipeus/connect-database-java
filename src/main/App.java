@@ -28,6 +28,8 @@ public class App {
             } else {
                 System.out.println("that bai");
             }
+            
+            connect.select();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
