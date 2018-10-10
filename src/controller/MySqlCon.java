@@ -11,8 +11,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.JType;
 
 /**
  *
@@ -44,21 +47,20 @@ public class MySqlCon {
         return conn;
     }
 
-    public int select() {
+    public List<Object> select() {
         String query = "SELECT * FROM man_hinh";
+        List<Object> listJ = new ArrayList<>();
+        
         try {
-            // create java s
             Statement st = getMySQLConnection().createStatement();
-
-            // execute the query, and get a java resultset
             ResultSet rs = st.executeQuery(query);
-
-            // iterate through the java resultset
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String name = rs.getString("ten");
+                String type = rs.getString("type");
+                String text = rs.getString("text");
 
-                System.out.format("%s, %s\n", id, name);
+                JType jType = new JType(id, type, text);
+                listJ.add(jType);
             }
             st.close();
         } catch (ClassNotFoundException ex) {
@@ -66,7 +68,7 @@ public class MySqlCon {
         } catch (SQLException ex) {
             Logger.getLogger(MySqlCon.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;
+        return listJ;
     }
 
 }
